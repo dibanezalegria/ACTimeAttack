@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ACTimeAttack</string>
+    <string name="empty_list_view_description">Empty list view background image</string>
+
 </resources>

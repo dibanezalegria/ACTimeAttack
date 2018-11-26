@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,15 +21,19 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.TreeMap;
 
 public class MainActivity extends AppCompatActivity {
 
     private final static String LOG = MainActivity.class.getSimpleName();
 
-    private static final String AC_SERVER_IP = "192.168.1.39";  /* AC Server */
+//    private static final String AC_SERVER_IP = "192.168.1.39";  /* AC Server */
+    private static final String AC_SERVER_IP = "192.168.1.100";  /* AC Server */
     private static final int PORT = 9996;   /* AC UDP port */
     private WifiManager.MulticastLock mLock;    /* Allows app to receive Wifi multicast packets */
     private DatagramSocket mSocket;
@@ -39,8 +44,14 @@ public class MainActivity extends AppCompatActivity {
     private PacketParser mParser;   /* Used by PacketHandlerAsyncTask */
     private Timer mTimer;   /* Timer runs the TimeTask that runs the AsyncTasks */
 
-    private TextView mCarTV, mTrackTV, mTopSpeedTV, mSpeedTV, mLaptimeTV, mLastlapTV, mBestlapTV;
+    private ListView mSessionListView;
+    private TextView mCarTV, mTrackTV, mTopSpeedTV, mSpeedTV, mLaptimeTV, mLastlapTV,
+            mBestlapTV, mRecordlapTV;
+
     private float mTopSpeed;
+    private int mCurLap;     /* Current lap number */
+
+    private List<Lap> mSessionLapList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,12 +66,22 @@ public class MainActivity extends AppCompatActivity {
         mLaptimeTV = findViewById(R.id.laptime_tv);
         mLastlapTV = findViewById(R.id.lastlap_tv);
         mBestlapTV = findViewById(R.id.bestlap_tv);
+        mRecordlapTV = findViewById(R.id.recordlap_tv);
 
         mTopSpeedTV.setTypeface(Typeface.MONOSPACE);
         mSpeedTV.setTypeface(Typeface.MONOSPACE);
         mLaptimeTV.setTypeface(Typeface.MONOSPACE);
         mLastlapTV.setTypeface(Typeface.MONOSPACE);
         mBestlapTV.setTypeface(Typeface.MONOSPACE);
+        mRecordlapTV.setTypeface(Typeface.MONOSPACE);
+
+        // Current lap number
+        mCurLap = 0;
+
+        // Session laptime list
+        mSessionLapList = new ArrayList<>();
+        mSessionListView = findViewById(R.id.session_list_view);
+        mSessionListView.setEmptyView(findViewById(R.id.session_empty_list_view));
 
         // Restart button
         Button restartBtn = findViewById(R.id.restart_btn);
@@ -84,7 +105,6 @@ public class MainActivity extends AppCompatActivity {
             mSocket = new DatagramSocket(PORT);
             mSocket.setBroadcast(true);
             mAppOn = true;
-
         } catch (IOException ex) {
             ex.printStackTrace();
             Toast.makeText(getApplicationContext(), "Is your WiFi on? Try changing your " +
@@ -159,9 +179,29 @@ public class MainActivity extends AppCompatActivity {
 
             mSpeedTV.setText(String.format(Locale.ENGLISH, "%.0f", mParser.speed));
             mTopSpeedTV.setText(String.format(Locale.ENGLISH, "%.0f", mTopSpeed));
-            mLaptimeTV.setText(PacketParser.format(mParser.lapTime));
-            mLastlapTV.setText(PacketParser.format(mParser.lastLap));
-            mBestlapTV.setText(PacketParser.format(mParser.bestLap));
+            mLaptimeTV.setText(Lap.format(mParser.lapTime));
+            mLastlapTV.setText(Lap.format(mParser.lastLap));
+            mBestlapTV.setText(Lap.format(mParser.bestLap));
+
+
+            if (mCurLap != mParser.lapCount) {
+                // Insert new laptime in list
+                mSessionLapList.add(new Lap(mParser.lapCount, mParser.lastLap));
+                Lap[] lapArr = mSessionLapList.toArray(new Lap[mSessionLapList.size()]);
+                SessionLapAdapter adapter = new SessionLapAdapter(getApplicationContext(), lapArr);
+                adapter.setBestLap(mParser.bestLap);
+                Log.d(LOG, "Lap: " + mParser.lastLap + " Best: " + mParser.bestLap + " Gap: " +
+                        Lap.format(mParser.lastLap - mParser.bestLap));
+                mSessionListView.setAdapter(adapter);
+
+                // Update database
+                
+
+                mTopSpeed = 0;
+                mCurLap = mParser.lapCount;
+            }
+
+//            Log.d(LOG, "LapCount: " + mParser.lapCount);
 
         }
     }

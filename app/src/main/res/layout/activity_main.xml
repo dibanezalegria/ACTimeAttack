@@ -5,191 +5,387 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@android:color/black"
+    android:orientation="vertical"
     tools:context="com.pbluedotsoft.actimeattack.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp">
+        android:paddingBottom="2dp"
+        android:paddingTop="4dp">
+
+        <TextView
+            android:id="@+id/car_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:background="#212121"
+            android:padding="8dp"
+            android:text="Car"
+            android:textAlignment="center"
+            android:textColor="@color/whiteText"
+            android:textSize="18sp"
+            />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#111111"
+            android:padding="8dp"
+            android:paddingStart="16dp"
+            android:text=" &#64; "
+            android:textAlignment="center"
+            android:textColor="#f5f5f5"
+            android:textSize="18sp"
+            />
 
         <TextView
             android:id="@+id/track_tv"
             android:layout_width="0dp"
-            android:layout_weight="8"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
+            android:layout_weight="4"
+            android:background="#212121"
+            android:padding="8dp"
             android:text="Track"
-            android:textSize="26sp"
-            android:padding="16dp"
-            />
-
-        <Button
-            android:id="@+id/restart_btn"
-            android:layout_width="0dp"
-            android:layout_weight="2"
-            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textColor="#f5f5f5"
             android:textSize="18sp"
-            android:text="Restart"/>
+            />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp">
+        android:paddingBottom="2dp"
+        android:paddingTop="2dp">
 
         <TextView
-            android:id="@+id/car_tv"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
-            android:text="Car"
-            android:textSize="26sp"
-            android:padding="16dp"
+            android:layout_weight="5"
+            android:background="#111111"
+            android:padding="@dimen/digits_padding"
+            android:text="Kmh"
+            android:textAlignment="center"
+            android:textColor="#f5f5f5"
+            android:textSize="18sp"
             />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp">
 
         <TextView
             android:id="@+id/speed_tv"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
+            android:layout_weight="5"
             android:ems="3"
+            android:padding="@dimen/digits_padding"
             android:text="0"
-            android:typeface="monospace"
-            android:textSize="26sp"
-            android:padding="16dp"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:textAlignment="center"
             android:textColor="@android:color/white"
-            android:ems="2"
-            android:text="/"
-            android:textSize="26sp"
-            android:padding="16dp"
+            android:textSize="@dimen/digits_text_large"
+            android:typeface="monospace"
             />
 
         <TextView
             android:id="@+id/topSpeed_tv"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/holo_red_dark"
+            android:layout_weight="5"
             android:ems="3"
+            android:padding="@dimen/digits_padding"
             android:text="0"
+            android:textAlignment="center"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="@dimen/digits_text_large"
             android:typeface="monospace"
-            android:textSize="26sp"
-            android:padding="16dp"
             />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
-            android:text="Km/h"
-            android:textSize="26sp"
-            android:padding="16dp"
-            />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/grey800"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp">
 
         <TextView
             android:layout_width="0dp"
-            android:layout_weight="5"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
-            android:text="LapTime"
-            android:textSize="26sp"
-            android:padding="16dp"
+            android:layout_weight="5"
+            android:background="#111111"
+            android:padding="@dimen/digits_padding"
+            android:text="Lap"
+            android:textAlignment="center"
+            android:textColor="#f5f5f5"
+            android:textSize="18sp"
             />
 
         <TextView
             android:id="@+id/laptime_tv"
             android:layout_width="0dp"
-            android:layout_weight="5"
             android:layout_height="wrap_content"
+            android:layout_weight="10"
+            android:padding="@dimen/digits_padding"
+            android:text="--:--:---"
+            android:textAlignment="center"
             android:textColor="@color/green300"
+            android:textSize="@dimen/digits_text_large"
             android:typeface="monospace"
-            android:text="0:00.000"
-            android:textSize="26sp"
-            android:padding="16dp"
             />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/grey900"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp">
 
         <TextView
             android:layout_width="0dp"
-            android:layout_weight="5"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
+            android:layout_weight="5"
+            android:background="#111111"
+            android:padding="@dimen/digits_padding"
             android:text="Last"
-            android:textSize="26sp"
-            android:padding="16dp"
+            android:textAlignment="center"
+            android:textColor="#f5f5f5"
+            android:textSize="18sp"
             />
 
         <TextView
             android:id="@+id/lastlap_tv"
             android:layout_width="0dp"
-            android:layout_weight="5"
             android:layout_height="wrap_content"
+            android:layout_weight="10"
+            android:padding="@dimen/digits_padding"
+            android:text="--:--:---"
+            android:textAlignment="center"
             android:textColor="@color/amber300"
-            android:text="0:00.000"
+            android:textSize="@dimen/digits_text_large"
             android:typeface="monospace"
-            android:textSize="26sp"
-            android:padding="16dp"
+            />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:background="#111111"
+            android:padding="@dimen/digits_padding"
+            android:text="Best"
+            android:textAlignment="center"
+            android:textColor="#f5f5f5"
+            android:textSize="18sp"
+            />
+
+        <TextView
+            android:id="@+id/bestlap_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="10"
+            android:padding="@dimen/digits_padding"
+            android:text="--:--:---"
+            android:textAlignment="center"
+            android:textColor="@color/indigo300"
+            android:textSize="@dimen/digits_text_large"
+            android:typeface="monospace"
+            />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:background="#111111"
+            android:padding="@dimen/digits_padding"
+            android:text="Rec"
+            android:textAlignment="center"
+            android:textColor="#f5f5f5"
+            android:textSize="18sp"
+            />
+
+        <TextView
+            android:id="@+id/recordlap_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="10"
+            android:padding="@dimen/digits_padding"
+            android:text="--:--:---"
+            android:textAlignment="center"
+            android:textColor="#8e24aa"
+            android:textSize="@dimen/digits_text_large"
+            android:typeface="monospace"
             />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/grey800"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp">
+        android:paddingBottom="4dp"
+        android:paddingTop="2dp">
 
-        <TextView
+        <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="5"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
-            android:text="Best"
-            android:textSize="26sp"
-            android:padding="16dp"
-            />
+            android:layout_weight="2"
+            android:orientation="vertical"
+            android:paddingEnd="2dp"
+            android:paddingStart="0dp">
 
-        <TextView
-            android:id="@+id/bestlap_tv"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:background="#3F51B5"
+                    android:padding="8dp"
+                    android:text="Session"
+                    android:textAlignment="center"
+                    android:textColor="#fff"
+                    android:textSize="18sp"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/pause_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:minHeight="0dp"
+                    android:paddingBottom="6dp"
+                    android:paddingTop="6dp"
+                    android:text="pause"
+                    android:textSize="14sp"/>
+
+                <Button
+                    android:id="@+id/restart_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:minHeight="0dp"
+                    android:paddingBottom="6dp"
+                    android:paddingTop="6dp"
+                    android:text="restart"
+                    android:textSize="14sp"/>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/session_empty_list_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:contentDescription="@string/empty_list_view_description"
+                android:padding="48dp"
+                android:src="@mipmap/watch_icon"
+                android:tint="@color/empty_list_icon_tint"/>
+
+            <ListView
+                android:id="@+id/session_list_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fadeScrollbars="false"
+                android:scrollbarSize="5dp"
+                android:scrollbarThumbVertical="@android:color/holo_blue_dark"
+                android:stackFromBottom="true"
+                android:textSize="18sp"
+                android:typeface="monospace"
+                android:visibility="visible"/>
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="5"
             android:layout_height="wrap_content"
-            android:textColor="@color/indigo300"
-            android:text="0:00.000"
-            android:typeface="monospace"
-            android:textSize="26sp"
-            android:padding="16dp"
-            />
+            android:layout_weight="3"
+            android:orientation="vertical"
+            android:paddingEnd="0dp"
+            android:paddingStart="2dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:background="#303F9F"
+                    android:padding="8dp"
+                    android:text="Database"
+                    android:textAlignment="center"
+                    android:textColor="#fff"
+                    android:textSize="18sp"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/laptime_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:background="#111111"
+                    android:paddingBottom="6dp"
+                    android:paddingTop="6dp"
+                    android:text="LAPTIME"
+                    android:textAlignment="center"
+                    android:textColor="#f5f5f5"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/gap_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="#111111"
+                    android:paddingBottom="6dp"
+                    android:paddingTop="6dp"
+                    android:text="GAP"
+                    android:textAlignment="center"
+                    android:textColor="#f5f5f5"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/nlaps_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="#111111"
+                    android:paddingBottom="6dp"
+                    android:paddingTop="6dp"
+                    android:text="LAPS"
+                    android:textAlignment="center"
+                    android:textColor="#f5f5f5"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/speed_button"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="#111111"
+                    android:paddingBottom="6dp"
+                    android:paddingTop="6dp"
+                    android:text="TOP SPEED"
+                    android:textAlignment="center"
+                    android:textColor="#f5f5f5"
+                    android:textSize="14sp"/>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/layout_database_empty_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:contentDescription="@string/empty_list_view_description"
+                android:padding="48dp"
+                android:src="@mipmap/database_icon"
+                android:tint="@color/empty_list_icon_tint"/>
+
+            <ListView
+                android:id="@+id/database_list_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fadeScrollbars="false"
+                android:scrollbarSize="5dp"
+                android:scrollbarThumbVertical="@android:color/holo_blue_dark"/>
+        </LinearLayout>
     </LinearLayout>
-
 </android.support.v7.widget.LinearLayoutCompat>
