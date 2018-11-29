@@ -2,6 +2,13 @@
     <string name="app_name">AC TimeAttack</string>
     <string name="empty_list_view_description">Empty list view background image</string>
 
+    <string
+        name="error_connecting"><![CDATA[<h3>Network problem</h3>Please make sure both console and Android device
+        are in the same WiFi network and double check that the IP in settings (app) matches your PS4 IP address.</p>
+        <p>Still not working? Try the following:</p><p>* Reset app by using RESTART button in the app (takes a few seconds)</p>
+        <p>* Restart Assetto Corsa<p><p>* Restart PS4 and
+        Android device</p><p>* Restart router</p><p>Best of luck!</p>]]></string>
+
     <!-- Preferences -->
     <string name="pref_sound_key">pref_sound_key</string>
 
@@ -31,7 +38,7 @@
     <string
         name="about"><![CDATA[<h3>About Assetto Corsa</h3>Assetto Corsa is a sim racing video game developed
         by Kunos Simulazioni. It is designed with an emphasis on a realistic racing experience.<br><br/>
-        <b>AC TimeAttack</b> is a companion app that aims to enhance the single player
+        <b>AC TimeAttack (v1.3)</b> is a companion app that aims to enhance the single player
         experience for console users. It saves your fastest laptimes for each car and track combination.</p>]]>
     </string>
 
@@ -43,14 +50,16 @@
         <h3>Instructions</h3><p>Find out your PS4\'s IP address in the console\'s
         menu (Settings/Network/View Connection Status/IP address). Enter the IP address in the app\'s settings menu.
         Enable the WiFi on your device and restart the app by pressing
-        the RESET APP button. Assetto Corsa will automatically communicate with the app once you start driving.</p>
+        the RESTART button. Assetto Corsa will automatically communicate with the app once you start driving.</p>
 
         <h3>API Limitations</h3>
         The API developed by Kunos for the consoles is a limited version of the one available for PC and
          some of its features are missing. For instance, the API does not tell about the layout selected by the user
          in the game. For instance, the API sees both Barcelona GP and Barcelona Moto as just Barcelona. My workaround
-         this problem is to display a menu with the different layouts for the selected track before starting recording
-         data. A pop up menu will appear after every reset for those tracks with more than one layout.
+         this problem is to display a <b>menu with the different layouts</b> for the selected track before starting recording
+         data. A pop up menu will appear after every restart for those tracks with more than one layout.
+         Another limitations is related to <b>invalid laps</b>. The API does not inform about invalid laps. The app will register
+         every lap as a valid lap. Remember that you can always delete laptimes from the database if you want to keep it clean.
 
         <h3>Database</h3>
         The database storing the laptimes can be accessed via the <b>Edit Database</b> option in the menu. Individual
@@ -58,7 +67,7 @@
         in your Android device.
 
         <h3>Important</h3>
-        Please remember to backup your database before removing/reinstalling AC Time Attack. The database with
+        Please remember to <b>backup your database</b> before removing/reinstalling AC Time Attack. The database with
         all its data is part of the app. If you want to reinstall the app or move your laptimes to another
          device use the backup/restore options in the menu.
 
@@ -68,8 +77,8 @@
         having problems try changing the UDP rate in the settings menu. This will introduce a slight delay in the communication
         but might solve your problem.
 
-        <h3>Reset App button</h3>
-        Assetto Corsa does not inform the app about changes in car/track configuration. The reset app button
+        <h3>Restart button</h3>
+        Assetto Corsa does not inform the app about changes in car/track configuration. The restart button reboots the app and
         forces the game to share that information so the app can update itself and record data for the right car/track combo.
 
         <h3>The on/off button</h3>

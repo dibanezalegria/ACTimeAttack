@@ -33,10 +33,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="#111111"
-            android:padding="8dp"
-            android:paddingStart="16dp"
+            android:padding="4dp"
             android:text=" &#64; "
-            android:textAlignment="center"
+            android:gravity="center"
             android:textColor="#f5f5f5"
             android:textSize="@dimen/small_text"
             />
@@ -264,7 +263,7 @@
                     android:minHeight="0dp"
                     android:paddingBottom="6dp"
                     android:paddingTop="6dp"
-                    android:text="reset app"
+                    android:text="restart"
                     android:textSize="@dimen/xsmall_text"/>
             </LinearLayout>
 

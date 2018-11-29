@@ -1,6 +1,5 @@
 package com.pbluedotsoft.actimeattack;
 
-import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.FragmentManager;
 import android.app.PendingIntent;
@@ -13,6 +12,8 @@ import android.database.Cursor;
 import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -34,20 +35,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.pbluedotsoft.actimeattack.data.LapContract.LapEntry;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import com.pbluedotsoft.actimeattack.data.LapContract.LapEntry;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager
         .LoaderCallbacks<Cursor>, TrackConfigDialog.DialogPositiveListener {
@@ -61,11 +60,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
     private WifiManager.MulticastLock mLock;    /* Allows app to receive Wifi multicast packets */
     private DatagramSocket mSocket;
 
+    private AlertDialog mInfoDialog;
+
     private ToggleButton pauseToggleBtn;
     private boolean mAppOn;         /* Pause flag for PacketHandlerAsyncTask */
     private boolean mHSKready;      /* Handshake finished, client/server are connected */
     private PacketParser mParser;   /* Used by PacketHandlerAsyncTask */
     private Timer mTimer;           /* Timer runs the TimeTask that runs the AsyncTasks */
+    private int mConnectionTries;   /* Handshake tries counter */
 
     private ListView mSessionListView, mDatabaseListView;
     private TextView mCarTV, mTrackTV, mTopSpeedTV, mSpeedTV, mLaptimeTV, mLastlapTV,
@@ -87,12 +89,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(LOG, "CREATE");
+//        Log.d(LOG, "CREATE");
 
-        if (savedInstanceState != null) {
-            mActualTrack = savedInstanceState.getString("actualTrack");
-            Log.d(LOG, "Restoring state: " + mActualTrack);
-        }
+//        if (savedInstanceState != null) {
+//            mActualTrack = savedInstanceState.getString("actualTrack");
+//            Log.d(LOG, "Restoring state: " + mActualTrack);
+//        }
 
         setContentView(R.layout.activity_main);
 
@@ -119,6 +121,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
         mCurLap = -1;
         mRecord = Integer.MAX_VALUE;
         mHSKready = false;
+        mConnectionTries = 0;
 
         // Session laptime list
         mSessionLapList = new ArrayList<>();
@@ -138,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
             @Override
             public void onClick(View v) {
 //               new RestartAppAsyncTask().execute();   // Soft reset (dismiss connection with AC)
-                hardReset();
+                restart();
             }
         });
 
@@ -156,17 +159,17 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if (mActualTrack != null) {
-            outState.putString("actualTrack", mActualTrack);
-        }
-        Log.d(LOG, "Saving state: " + mActualTrack);
+//        if (mActualTrack != null) {
+//            outState.putString("actualTrack", mActualTrack);
+//        }
+//        Log.d(LOG, "Saving state: " + mActualTrack);
     }
 
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d(LOG, "RESUME");
+//        Log.d(LOG, "RESUME");
         // Set Default Preferences
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -176,35 +179,38 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
                         .pref_udp_key), getResources().getString(R.string.pref_udp_default)));
         udpRate = (udpRate < 10 || udpRate > 50) ? 15 : udpRate;
 
-        Log.d(LOG, "udpRate: " + udpRate);
-
-        Log.d(LOG, "onResume AC_SERVER_IP: " + AC_SERVER_IP + " mActualTrack: " + mActualTrack);
-
-        // Coming back from edit database activity?
+        //
+        // Coming back from edit database activity? -----------------------> SKIP Network Setup
+        //
         if (mSocket != null) {
             mAppOn = true;
             return;
         }
+
+        WifiManager wifiManager = getWifiManager();
+        if (wifiManager == null) {
+            return;
+        }
+
+        // Network is OK
+
+        mLock = wifiManager.createMulticastLock("lock");
 
         try {
             mSocket = new DatagramSocket(PORT);
             mSocket.setBroadcast(true);
             mAppOn = true;
         } catch (IOException ex) {
+            mSocket = null;
             ex.printStackTrace();
-            Toast.makeText(getApplicationContext(), "WiFi no detected. " +
-                    "Check IP address in settings and restart.", Toast.LENGTH_LONG).show();
+            showInfoDialog(R.string.error_connecting);
+            return;
         }
-
-        WifiManager wifiManager = (WifiManager) getApplicationContext()
-                .getSystemService(Context.WIFI_SERVICE);
-        if (wifiManager != null)
-            mLock = wifiManager.createMulticastLock("lock");
 
         // Connect to AC server
         new HandshakeAsyncTask().execute();
 
-        // ToogleButton ON
+        // ToggleButton ON
         pauseToggleBtn.setChecked(true);
 
         // Start packet receiver on client
@@ -222,10 +228,20 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        if (mInfoDialog != null) {
+            mInfoDialog.dismiss();
+        }
+    }
+
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d(LOG, "DESTROY");
+//        Log.d(LOG, "DESTROY");
     }
+
 
     /**
      * Update database (and record if laptime faster than previous or first lap for combo car/track)
@@ -254,13 +270,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
                 mRecord = laptime;
                 mRecordlapTV.setText(Lap.format(mRecord));
                 // Beep sound
-                new ToneGenerator(AudioManager.STREAM_MUSIC, 100)
-                        .startTone(ToneGenerator.TONE_PROP_BEEP2);
+                if (mSoundOn) {
+                    new ToneGenerator(AudioManager.STREAM_MUSIC, 100)
+                            .startTone(ToneGenerator.TONE_PROP_BEEP2);
+                }
             }
             int nlaps = cursor.getInt(cursor.getColumnIndex(LapEntry.COLUMN_LAP_NLAPS));
             values.put(LapEntry.COLUMN_LAP_NLAPS, nlaps + 1);
             getContentResolver().update(LapEntry.CONTENT_URI, values, selection, selArgs);
-            Log.d(LOG, "Database UPDATE");
+//            Log.d(LOG, "Database UPDATE");
         } else {
             values.put(LapEntry.COLUMN_LAP_TOP_SPEED, mTopSpeed);
             values.put(LapEntry.COLUMN_LAP_TIME, laptime);
@@ -268,7 +286,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
             getContentResolver().insert(LapEntry.CONTENT_URI, values);
             mRecord = laptime;
             mRecordlapTV.setText(Lap.format(mRecord));
-            Log.d(LOG, "Database INSERT");
+//            Log.d(LOG, "Database INSERT");
         }
 
         // Inform DBCursor is laptime better than fastest car on this track
@@ -279,6 +297,44 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
         if (cursor != null && !cursor.isClosed())
             cursor.close();
     }
+
+
+    /**
+     * Checks network and returns WifiManager object
+     *
+     * @return WifiManager object
+     */
+    private WifiManager getWifiManager() {
+        // Network
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        if (connectivityManager == null) {
+//            Log.d(LOG, "Connectivity manager error");
+            showInfoDialog(R.string.error_connecting);
+            return null;
+        }
+
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        if (activeNetworkInfo == null || !activeNetworkInfo.isConnected()) {
+//            Log.d(LOG, "No network detected");
+            showInfoDialog(R.string.error_connecting);
+            return null;
+        }
+
+        // WiFi
+        WifiManager wifiManager = (WifiManager) getApplicationContext()
+                .getSystemService(Context.WIFI_SERVICE);
+        if (wifiManager == null) {
+//            Log.d(LOG, "No WiFi detected");
+            showInfoDialog(R.string.error_connecting);
+            return null;
+        }
+
+        return wifiManager;
+    }
+
+
 
     /**
      * Menu method implementation
@@ -309,10 +365,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
                 editor.putBoolean(getString(R.string.pref_sound_key), mSoundOn);
                 editor.apply();
                 if (mSoundOn) {
-                    Toast.makeText(getApplicationContext(), "Sound ON", Toast.LENGTH_LONG)
+                    Toast.makeText(getApplicationContext(), "Sound ON", Toast
+                            .LENGTH_LONG)
                             .show();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Sound OFF", Toast.LENGTH_SHORT)
+                    Toast.makeText(getApplicationContext(), "Sound OFF", Toast
+                            .LENGTH_SHORT)
                             .show();
                 }
 //                Log.d(TAG, "mSound: " + mSoundOn);
@@ -338,6 +396,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
             case R.id.action_about:
                 showInfoDialog(R.string.about);
                 return true;
+            case R.id.exit_app:
+                this.finishAffinity();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -348,7 +409,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
      * Helps restart loader after handshake when actual track is available.
      */
     public void restartLoader() {
-        Log.d(LOG, "RESTART Loader");
+//        Log.d(LOG, "RESTART Loader");
         getSupportLoaderManager().restartLoader(LAPTIME_LOADER, null, this);
     }
 
@@ -413,7 +474,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
     /**
      * Restart app.
      */
-    private void hardReset() {
+    private void restart() {
         // Restart app (code from stack overflow)
         Intent mStartActivity = new Intent(getApplicationContext(), MainActivity.class);
         int mPendingIntentId = 123456;
@@ -478,7 +539,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
 
             // Passing finish line?
             if (mCurLap != mParser.lapCount) {
-                if (mCurLap >= 0 && mParser.lastLap > 0) {
+                // Sometimes lastLap is a few ms (garbage data) when starting practice
+                if (mCurLap >= 0 && mParser.lastLap > 10000) {
                     // Check if same or higher lap number already in list (user restarted session)
                     for (Lap lap : mSessionLapList) {
                         if (lap.getLapNum() >= mParser.lapCount) {
@@ -514,8 +576,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
     public void onPositiveClick(String selectedItem) {
         mActualTrack = selectedItem;
         mTrackTV.setText(mActualTrack);
-
-        Log.d(LOG, "Selected variation: " + mActualTrack);
 
         // Inject actual car in TrackCursorAdapter
         TrackCursorAdapter.setActualCar(mActualCar);
@@ -567,7 +627,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
             mLock.acquire();
             try {
                 // Contact AC Server
-                Log.d(LOG, "HandshakeAsyncTask->doInBackground AC_SERVER_IP: " + AC_SERVER_IP);
+//                Log.d(LOG, "HandshakeAsyncTask->doInBackground AC_SERVER_IP: " + AC_SERVER_IP);
                 InetAddress server = InetAddress.getByName(AC_SERVER_IP);
                 DatagramPacket packet = new DatagramPacket(hand, hand.length, server,
                         PORT);
@@ -588,7 +648,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
                         PORT);
                 mSocket.send(packet);
                 Log.d(LOG, "Client has been added as a listener to AC server.");
-                mHSKready = true;
                 return true;
 
             } catch (SocketException e) {
@@ -609,10 +668,17 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
             }
 
             // packet identifier should be 4242 and version 1
-            if (hsParser.identifier != 4242 || hsParser.version != 1) {
-                Toast.makeText(getApplicationContext(), "Bad handshake. Running automatic " +
-                        "reset...", Toast.LENGTH_LONG).show();
-                new RestartAppAsyncTask().execute();
+            if (hsParser.identifier == 4242 && hsParser.version == 1) {
+//                Log.d(LOG, "Connected");
+                mHSKready = true;
+            } else {
+                if (mConnectionTries > 100) {
+                    showInfoDialog(R.string.error_connecting);
+                } else {
+                    mConnectionTries++;
+//                    Log.d(LOG, "Trying...");
+                    new HandshakeAsyncTask().execute();
+                }
                 return;
             }
 
@@ -644,72 +710,76 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
     }
 
 
-    public class RestartAppAsyncTask extends AsyncTask<Void, Void, Boolean> {
-        // Type of update required from the server
-        private static final int DISMISS_COMMUNICATION = 3;
-
-        private byte[] identifier, version, operationId, hand;
-
-        @Override
-        protected Boolean doInBackground(Void... voids) {
-            // Pause async task
-            mAppOn = false;
-
-            // Stop timer running packet reader task
-            mTimer.cancel();
-            mTimer.purge();
-
-            // Prepare handshake
-            identifier = intToLittleEndian(1);
-            version = intToLittleEndian(1);
-            operationId = intToLittleEndian(0);
-
-            hand = appendByteArray(identifier, version);
-            hand = appendByteArray(hand, operationId);
-
-            mLock.acquire();
-            try {
-                // Dismiss communication with AC server
-                InetAddress server = InetAddress.getByName(AC_SERVER_IP);
-                operationId = intToLittleEndian(DISMISS_COMMUNICATION);
-                hand = appendByteArray(identifier, version);
-                hand = appendByteArray(hand, operationId);
-                DatagramPacket packet = new DatagramPacket(hand, hand.length, server,
-                        PORT);
-                mSocket.send(packet);
-                mHSKready = false;
-                return true;
-
-            } catch (SocketException e) {
-                Log.d(LOG, "Socket Error:", e);
-            } catch (IOException e) {
-                Log.d(LOG, "IO Error:", e);
-            } finally {
-                if (mLock.isHeld())
-                    mLock.release();
-            }
-
-            return false;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean validPacket) {
-            if (!validPacket) {
-                return;
-            }
-
-            Log.d(LOG, "Client has been REMOVED as a listener from AC server. Restarting...");
-
-            hardReset();
-        }
-    }
+//    public class RestartAppAsyncTask extends AsyncTask<Void, Void, Boolean> {
+//        // Type of update required from the server
+//        private static final int DISMISS_COMMUNICATION = 3;
+//
+//        private byte[] identifier, version, operationId, hand;
+//
+//        @Override
+//        protected Boolean doInBackground(Void... voids) {
+//            // Pause async task
+//            mAppOn = false;
+//
+//            // Stop timer running packet reader task
+//            mTimer.cancel();
+//            mTimer.purge();
+//
+//            // Prepare handshake
+//            identifier = intToLittleEndian(1);
+//            version = intToLittleEndian(1);
+//            operationId = intToLittleEndian(0);
+//
+//            hand = appendByteArray(identifier, version);
+//            hand = appendByteArray(hand, operationId);
+//
+//            mLock.acquire();
+//            try {
+//                // Dismiss communication with AC server
+//                InetAddress server = InetAddress.getByName(AC_SERVER_IP);
+//                operationId = intToLittleEndian(DISMISS_COMMUNICATION);
+//                hand = appendByteArray(identifier, version);
+//                hand = appendByteArray(hand, operationId);
+//                DatagramPacket packet = new DatagramPacket(hand, hand.length, server,
+//                        PORT);
+//                mSocket.send(packet);
+//                mHSKready = false;
+//                return true;
+//
+//            } catch (SocketException e) {
+//                Log.d(LOG, "Socket Error:", e);
+//            } catch (IOException e) {
+//                Log.d(LOG, "IO Error:", e);
+//            } finally {
+//                if (mLock.isHeld())
+//                    mLock.release();
+//            }
+//
+//            return false;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(Boolean validPacket) {
+//            if (!validPacket) {
+//                return;
+//            }
+//
+//            Log.d(LOG, "Client has been REMOVED as a listener from AC server. Restarting...");
+//
+//            restart();
+//        }
+//    }
 
 
     /**
      * Shows HTML text in an Information Dialog.
      */
     private void showInfoDialog(int messageID) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.MyDialogTheme);
+        if (mInfoDialog != null) {
+            mInfoDialog.dismiss();
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style
+                .MyDialogTheme);
         // fromHtml deprecated for Android N and higher
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             builder.setMessage(Html.fromHtml(getString(messageID),
@@ -722,7 +792,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
                 // Do nothing
             }
         });
-        builder.create().show();
+        builder.create();
+
+        mInfoDialog = builder.show();
     }
 
 

@@ -16,6 +16,7 @@
         android:paddingEnd="8dp"
         android:paddingStart="4dp"
         android:text="Lap number"
+        android:textColor="@color/whiteText"
         android:textSize="@dimen/small_text"/>
 
     <TextView
@@ -26,6 +27,7 @@
         android:paddingEnd="4dp"
         android:paddingStart="4dp"
         android:text="Laptime"
+        android:textColor="@color/whiteText"
         android:textSize="@dimen/small_text"
         android:gravity="center"/>
 
@@ -38,6 +40,7 @@
         android:paddingStart="4dp"
         android:text="Gap"
         android:textSize="@dimen/small_text"
+        android:textColor="@color/whiteText"
         android:gravity="end"/>
 
 </LinearLayout>

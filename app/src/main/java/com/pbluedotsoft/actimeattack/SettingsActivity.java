@@ -3,6 +3,7 @@ package com.pbluedotsoft.actimeattack;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class SettingsActivity extends AppCompatPreferenceActivity {
 
@@ -35,6 +36,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             // Respond to the action bar's Up/Home button
             case android.R.id.home:
                 super.onBackPressed();
+                Toast.makeText(getApplicationContext(), "Restart to use updated settings",
+                        Toast
+                        .LENGTH_LONG).show();
                 return true;
         }
         return super.onOptionsItemSelected(item);

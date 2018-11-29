@@ -14,7 +14,7 @@
         android:layout_weight="0"
         android:paddingEnd="0dp"
         android:paddingStart="8dp"
-        android:textSize="@dimen/small_text"
+        android:textSize="@dimen/xsmall_text"
         android:textColor="@color/whiteText"
         android:visibility="gone"/>
 
@@ -26,7 +26,7 @@
         android:maxLines="1"
         android:paddingEnd="0dp"
         android:paddingStart="8dp"
-        android:textSize="@dimen/small_text"
+        android:textSize="@dimen/xsmall_text"
         android:textColor="@color/whiteText"/>
 
     <TextView
@@ -37,7 +37,7 @@
         android:maxLines="1"
         android:paddingEnd="0dp"
         android:paddingStart="8dp"
-        android:textSize="@dimen/small_text"
+        android:textSize="@dimen/xsmall_text"
         android:textColor="@color/whiteText"/>
 
     <TextView
@@ -47,7 +47,7 @@
         android:layout_weight="1"
         android:gravity="center"
         android:maxLines="1"
-        android:textSize="@dimen/small_text"
+        android:textSize="@dimen/xsmall_text"
         android:textColor="@color/whiteText"/>
 
     <TextView
@@ -57,7 +57,7 @@
         android:layout_weight="2"
         android:gravity="center"
         android:maxLines="1"
-        android:textSize="@dimen/small_text"
+        android:textSize="@dimen/xsmall_text"
         android:textColor="@color/whiteText"/>
 
     <TextView
@@ -67,7 +67,7 @@
         android:layout_weight="1"
         android:gravity="center"
         android:maxLines="1"
-        android:textSize="@dimen/small_text"
+        android:textSize="@dimen/xsmall_text"
         android:textColor="@color/whiteText"/>
 
     <Button
@@ -79,7 +79,7 @@
         android:padding="0dp"
         android:minHeight="0dp"
         android:background="@drawable/delete_button"
-        android:textSize="@dimen/small_text"
+        android:textSize="@dimen/xsmall_text"
         android:text="DEL"
         android:textColor="@color/whiteText"/>
 
