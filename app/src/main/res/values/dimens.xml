@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="digits_text_large">18sp</dimen>
+    <dimen name="xsmall_text">12sp</dimen>
+    <dimen name="small_text">14sp</dimen>
+    <dimen name="medium_text">16sp</dimen>
+    <dimen name="large_text">18sp</dimen>
+
     <dimen name="digits_padding">8dp</dimen>
+    <dimen name="digits_small_padding">4dp</dimen>
 </resources>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingBottom="2dp"
+    android:paddingTop="2dp">
+
+    <TextView
+        android:id="@+id/car_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:maxLines="1"
+        android:paddingEnd="0dp"
+        android:paddingStart="8dp"
+        android:gravity="start"
+        android:textSize="@dimen/medium_text"
+        android:textColor="@color/whiteText"/>
+
+     <TextView
+        android:id="@+id/laptime_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:maxLines="1"
+        android:paddingEnd="0dp"
+        android:paddingStart="8dp"
+        android:gravity="center"
+        android:textSize="@dimen/medium_text"
+        android:textColor="@color/whiteText"/>
+
+    <TextView
+        android:id="@+id/gap_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:maxLines="1"
+        android:paddingEnd="0dp"
+        android:paddingStart="8dp"
+        android:gravity="center"
+        android:textSize="@dimen/medium_text"
+        android:textColor="@color/whiteText"/>
+
+    <TextView
+        android:id="@+id/nlaps_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:maxLines="1"
+        android:paddingEnd="0dp"
+        android:paddingStart="8dp"
+        android:gravity="center"
+        android:textSize="@dimen/medium_text"
+        android:textColor="@color/whiteText"/>
+
+    <TextView
+        android:id="@+id/top_speed_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textSize="@dimen/medium_text"
+        android:textColor="@color/whiteText"/>
+
+</LinearLayout>

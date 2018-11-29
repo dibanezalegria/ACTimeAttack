@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/darkBg"
+    android:orientation="vertical"
+    tools:context="com.pbluedotsoft.actimeattack.DBActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/darkBg"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/track_btn"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:gravity="center"
+            android:maxLines="1"
+            android:minHeight="0dp"
+            android:paddingBottom="6dp"
+            android:paddingTop="6dp"
+            android:textSize="@dimen/small_text"
+            android:text="TRACK"
+            android:background="@color/darkerBg"
+            android:textColor="@color/whiteText"/>
+
+        <TextView
+            android:id="@+id/car_btn"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:gravity="center"
+            android:maxLines="1"
+            android:minHeight="0dp"
+            android:paddingBottom="6dp"
+            android:paddingTop="6dp"
+            android:textSize="@dimen/small_text"
+            android:text="CAR"
+            android:background="@color/darkerBg"
+            android:textColor="@color/whiteText"/>
+
+        <TextView
+            android:id="@+id/nlaps_btn"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:maxLines="1"
+            android:minHeight="0dp"
+            android:paddingBottom="6dp"
+            android:paddingTop="6dp"
+            android:textSize="@dimen/small_text"
+            android:text="LAPS"
+            android:background="@color/darkerBg"
+            android:textColor="@color/whiteText"/>
+
+        <TextView
+            android:id="@+id/time_btn"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:maxLines="1"
+            android:minHeight="0dp"
+            android:paddingBottom="6dp"
+            android:paddingTop="6dp"
+            android:textSize="@dimen/small_text"
+            android:text="TIME"
+            android:background="@color/darkerBg"
+            android:textColor="@color/whiteText"/>
+
+        <TextView
+            android:id="@+id/speed_btn"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:maxLines="1"
+            android:minHeight="0dp"
+            android:paddingBottom="6dp"
+            android:paddingTop="6dp"
+            android:textSize="@dimen/small_text"
+            android:text="KMH"
+            android:background="@color/darkerBg"
+            android:textColor="@color/whiteText"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:maxLines="1"
+            android:minHeight="0dp"
+            android:paddingBottom="6dp"
+            android:paddingTop="6dp"
+            android:textSize="@dimen/small_text"
+            android:text=""
+            android:textColor="@color/blackText"/>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/layout_laptimes_empty_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_gravity="center_horizontal"
+        android:padding="48dp"
+        android:contentDescription="@string/empty_list_view_description"
+        android:src="@mipmap/database_icon"
+        android:tint="@color/empty_list_icon_tint"/>
+
+    <ListView
+        android:id="@+id/laptimes_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fadeScrollbars="false"
+        android:scrollbarSize="5dp"
+        android:scrollbarThumbVertical="@android:color/holo_blue_dark"/>
+
+</LinearLayout>
+

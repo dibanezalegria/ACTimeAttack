@@ -8,9 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import java.math.BigDecimal;
-import java.util.Locale;
-
 /**
  * Created by daniel on 26/11/18.
  */
@@ -29,7 +26,7 @@ public class SessionLapAdapter extends ArrayAdapter<Lap> {
         Lap aLap = getItem(position);
         if (convertView == null) {
             convertView = (LayoutInflater.from(getContext()))
-                    .inflate(R.layout.session_lap_item, parent, false);
+                    .inflate(R.layout.session_list_item, parent, false);
         }
 
         // Alternate row background color
@@ -48,6 +45,11 @@ public class SessionLapAdapter extends ArrayAdapter<Lap> {
                 tvLaptime.setTextColor(ContextCompat.getColor(getContext(), R.color.bestTime));
             } else {
                 tvLaptime.setTextColor(ContextCompat.getColor(getContext(), R.color.whiteText));
+            }
+            if (position == 0) {
+                tvLapNumber.setTextColor(ContextCompat.getColor(getContext(), R.color.lastlap));
+            } else {
+                tvLapNumber.setTextColor(ContextCompat.getColor(getContext(), R.color.whiteText));
             }
             tvLapNumber.setText(String.format("%s", aLap.getLapNum()));
             tvLaptime.setText(PacketParser.format(aLap.getTime()));

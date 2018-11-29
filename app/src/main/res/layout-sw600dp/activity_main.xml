@@ -12,8 +12,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="0dp"
-        android:paddingTop="0dp">
+        android:paddingBottom="2dp"
+        android:paddingTop="4dp">
 
         <TextView
             android:id="@+id/car_tv"
@@ -21,11 +21,11 @@
             android:layout_height="wrap_content"
             android:layout_weight="4"
             android:background="#212121"
-            android:padding="4dp"
+            android:padding="8dp"
             android:text="Car"
             android:textAlignment="center"
             android:textColor="@color/whiteText"
-            android:textSize="@dimen/small_text"
+            android:textSize="18sp"
             />
 
         <TextView
@@ -38,7 +38,7 @@
             android:text=" &#64; "
             android:textAlignment="center"
             android:textColor="#f5f5f5"
-            android:textSize="@dimen/small_text"
+            android:textSize="18sp"
             />
 
         <TextView
@@ -47,11 +47,11 @@
             android:layout_height="wrap_content"
             android:layout_weight="4"
             android:background="#212121"
-            android:padding="4dp"
+            android:padding="8dp"
             android:text="Track"
             android:textAlignment="center"
             android:textColor="@color/whiteText"
-            android:textSize="@dimen/small_text"
+            android:textSize="18sp"
             />
     </LinearLayout>
 
@@ -66,11 +66,11 @@
             android:layout_height="wrap_content"
             android:layout_weight="5"
             android:background="#111111"
-            android:padding="@dimen/digits_small_padding"
+            android:padding="@dimen/digits_padding"
             android:text="Kmh"
             android:textAlignment="center"
             android:textColor="#f5f5f5"
-            android:textSize="@dimen/small_text"
+            android:textSize="18sp"
             />
 
         <TextView
@@ -79,11 +79,11 @@
             android:layout_height="wrap_content"
             android:layout_weight="5"
             android:ems="3"
-            android:padding="@dimen/digits_small_padding"
+            android:padding="@dimen/digits_padding"
             android:text="0"
             android:textAlignment="center"
             android:textColor="@color/whiteText"
-            android:textSize="@dimen/small_text"
+            android:textSize="@dimen/large_text"
             android:typeface="monospace"
             />
 
@@ -93,11 +93,11 @@
             android:layout_height="wrap_content"
             android:layout_weight="5"
             android:ems="3"
-            android:padding="@dimen/digits_small_padding"
+            android:padding="@dimen/digits_padding"
             android:text="0"
             android:textAlignment="center"
             android:textColor="@android:color/holo_red_dark"
-            android:textSize="@dimen/small_text"
+            android:textSize="@dimen/large_text"
             android:typeface="monospace"
             />
 
@@ -106,11 +106,11 @@
             android:layout_height="wrap_content"
             android:layout_weight="5"
             android:background="#111111"
-            android:padding="@dimen/digits_small_padding"
+            android:padding="@dimen/digits_padding"
             android:text="Lap"
             android:textAlignment="center"
             android:textColor="#f5f5f5"
-            android:textSize="@dimen/small_text"
+            android:textSize="18sp"
             />
 
         <TextView
@@ -118,11 +118,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="10"
-            android:padding="@dimen/digits_small_padding"
+            android:padding="@dimen/digits_padding"
             android:text="--:--:---"
             android:textAlignment="center"
             android:textColor="@color/green300"
-            android:textSize="@dimen/small_text"
+            android:textSize="@dimen/large_text"
             android:typeface="monospace"
             />
 
@@ -131,12 +131,11 @@
             android:layout_height="wrap_content"
             android:layout_weight="5"
             android:background="#111111"
-            android:padding="@dimen/digits_small_padding"
+            android:padding="@dimen/digits_padding"
             android:text="Last"
             android:textAlignment="center"
             android:textColor="#f5f5f5"
-            android:textSize="@dimen/small_text"
-            android:visibility="gone"
+            android:textSize="18sp"
             />
 
         <TextView
@@ -144,11 +143,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="10"
-            android:padding="@dimen/digits_small_padding"
+            android:padding="@dimen/digits_padding"
             android:text="--:--:---"
             android:textAlignment="center"
             android:textColor="@color/amber300"
-            android:textSize="@dimen/small_text"
+            android:textSize="@dimen/large_text"
             android:typeface="monospace"
             />
 
@@ -157,12 +156,11 @@
             android:layout_height="wrap_content"
             android:layout_weight="5"
             android:background="#111111"
-            android:padding="@dimen/digits_small_padding"
+            android:padding="@dimen/digits_padding"
             android:text="Best"
             android:textAlignment="center"
             android:textColor="#f5f5f5"
-            android:textSize="@dimen/small_text"
-            android:visibility="gone"
+            android:textSize="18sp"
             />
 
         <TextView
@@ -170,11 +168,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="10"
-            android:padding="@dimen/digits_small_padding"
+            android:padding="@dimen/digits_padding"
             android:text="--:--:---"
             android:textAlignment="center"
             android:textColor="@color/indigo300"
-            android:textSize="@dimen/small_text"
+            android:textSize="@dimen/large_text"
             android:typeface="monospace"
             />
 
@@ -183,12 +181,11 @@
             android:layout_height="wrap_content"
             android:layout_weight="5"
             android:background="#111111"
-            android:padding="@dimen/digits_small_padding"
+            android:padding="@dimen/digits_padding"
             android:text="Rec"
             android:textAlignment="center"
             android:textColor="#f5f5f5"
-            android:textSize="@dimen/small_text"
-            android:visibility="gone"
+            android:textSize="18sp"
             />
 
         <TextView
@@ -196,11 +193,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="10"
-            android:padding="@dimen/digits_small_padding"
+            android:padding="@dimen/digits_padding"
             android:text="--:--:---"
             android:textAlignment="center"
             android:textColor="@color/record"
-            android:textSize="@dimen/small_text"
+            android:textSize="@dimen/large_text"
             android:typeface="monospace"
             />
     </LinearLayout>
@@ -208,7 +205,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="2dp"
+        android:paddingBottom="4dp"
         android:paddingTop="2dp">
 
         <LinearLayout
@@ -228,11 +225,11 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="10"
                     android:background="@color/colorPrimary"
-                    android:padding="2dp"
+                    android:padding="4dp"
                     android:text="Session"
                     android:textAlignment="center"
                     android:textColor="#fff"
-                    android:textSize="@dimen/small_text"
+                    android:textSize="18sp"
                     />
             </LinearLayout>
 
@@ -252,7 +249,7 @@
                     android:paddingTop="6dp"
                     android:textOn="ON"
                     android:textOff="OFF"
-                    android:textSize="@dimen/xsmall_text"/>
+                    android:textSize="14sp"/>
 
                 <Button
                     android:id="@+id/restart_btn"
@@ -265,7 +262,7 @@
                     android:paddingBottom="6dp"
                     android:paddingTop="6dp"
                     android:text="reset app"
-                    android:textSize="@dimen/xsmall_text"/>
+                    android:textSize="14sp"/>
             </LinearLayout>
 
             <ImageView
@@ -285,7 +282,7 @@
                 android:fadeScrollbars="false"
                 android:scrollbarSize="5dp"
                 android:scrollbarThumbVertical="@android:color/holo_blue_dark"
-                android:textSize="@dimen/small_text"
+                android:textSize="18sp"
                 android:typeface="monospace"
                 android:visibility="visible"/>
         </LinearLayout>
@@ -307,11 +304,11 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="10"
                     android:background="@color/colorPrimary"
-                    android:padding="2dp"
+                    android:padding="4dp"
                     android:text="Database"
                     android:textAlignment="center"
                     android:textColor="#fff"
-                    android:textSize="@dimen/small_text"
+                    android:textSize="18sp"
                     />
             </LinearLayout>
 
@@ -349,7 +346,7 @@
                     android:id="@+id/gap_btn"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="2"
+                    android:layout_weight="1"
                     android:background="#111111"
                     android:paddingBottom="6dp"
                     android:paddingTop="6dp"
@@ -402,7 +399,7 @@
                 android:fadeScrollbars="false"
                 android:scrollbarSize="5dp"
                 android:scrollbarThumbVertical="@android:color/holo_blue_dark"
-                android:textSize="@dimen/small_text"
+                android:textSize="18sp"
                 android:typeface="monospace"
                 android:visibility="visible"/>
         </LinearLayout>

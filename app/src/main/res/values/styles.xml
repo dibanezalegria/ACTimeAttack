@@ -9,4 +9,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="MyDialogTheme"
+           parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
 </resources>

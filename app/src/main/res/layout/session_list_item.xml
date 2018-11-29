@@ -12,35 +12,32 @@
         android:id="@+id/lapnumber_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:paddingEnd="8dp"
-        android:paddingStart="8dp"
+        android:paddingStart="4dp"
         android:text="Lap number"
-        android:textSize="18sp"
-        android:typeface="monospace"/>
+        android:textSize="@dimen/small_text"/>
 
     <TextView
         android:id="@+id/laptime_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="5"
-        android:paddingEnd="8dp"
-        android:paddingStart="8dp"
+        android:paddingEnd="4dp"
+        android:paddingStart="4dp"
         android:text="Laptime"
-        android:textSize="18sp"
-        android:gravity="center"
-        android:typeface="monospace"/>
+        android:textSize="@dimen/small_text"
+        android:gravity="center"/>
 
     <TextView
         android:id="@+id/gap_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="4"
-        android:paddingEnd="24dp"
-        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:paddingStart="4dp"
         android:text="Gap"
-        android:textSize="18sp"
-        android:gravity="end"
-        android:typeface="monospace"/>
+        android:textSize="@dimen/small_text"
+        android:gravity="end"/>
 
 </LinearLayout>

@@ -1,5 +1,81 @@
 <resources>
-    <string name="app_name">ACTimeAttack</string>
+    <string name="app_name">AC TimeAttack</string>
     <string name="empty_list_view_description">Empty list view background image</string>
+
+    <!-- Preferences -->
+    <string name="pref_sound_key">pref_sound_key</string>
+
+    <string name="pref_ip_key">pref_ip_key</string>
+    <string name="pref_ip_title">IP address</string>
+    <string name="pref_ip_summary">Your PS4\'s IP address from
+        Settings/Network/View Connection Status/IP address</string>
+    <string name="pref_ip_default">192.168.1.100</string>
+
+    <string name="pref_udp_key">pref_udp_key</string>
+    <string name="pref_udp_title">UDP rate</string>
+    <string name="pref_udp_summary">Newer devices should use lower rate value for better
+        synchronization. Default value is 15. Range is [10, 50]</string>
+    <string name="pref_udp_default">15</string>
+
+    <!-- Backup/Restore -->
+    <string name="backup_ok">Backup completed successfully.</string>
+    <string name="backup_fail">Error: backup failed.</string>
+    <string name="restore_ok">Restore completed successfully.</string>
+    <string name="restore_fail">Error: restore failed.</string>
+    <string name="restore_warning">WARNING: \n\nRestoring laptimes from file will remove
+        all your current laptimes in the database.\n\nAre you sure you want to continue?</string>
+
+    <!-- DBActivity -->
+    <string name="allow_access">Allow access to storage to be able to restore/backup laptimes.</string>
+
+    <string
+        name="about"><![CDATA[<h3>About Assetto Corsa</h3>Assetto Corsa is a sim racing video game developed
+        by Kunos Simulazioni. It is designed with an emphasis on a realistic racing experience.<br><br/>
+        <b>AC TimeAttack</b> is a companion app that aims to enhance the single player
+        experience for console users. It saves your fastest laptimes for each car and track combination.</p>]]>
+    </string>
+
+    <string
+        name="help"><![CDATA[<h2>Welcome to AC Time Attack!</h2><p>This app is a conversion of my pCARS for Project
+        Cars app to Assetto Corsa. It displays timing information and stores your fastest laptimes for all car/track
+        combinations in a database.
+
+        <h3>Instructions</h3><p>Find out your PS4\'s IP address in the console\'s
+        menu (Settings/Network/View Connection Status/IP address). Enter the IP address in the app\'s settings menu.
+        Enable the WiFi on your device and restart the app by pressing
+        the RESET APP button. Assetto Corsa will automatically communicate with the app once you start driving.</p>
+
+        <h3>API Limitations</h3>
+        The API developed by Kunos for the consoles is a limited version of the one available for PC and
+         some of its features are missing. For instance, the API does not tell about the layout selected by the user
+         in the game. For instance, the API sees both Barcelona GP and Barcelona Moto as just Barcelona. My workaround
+         this problem is to display a menu with the different layouts for the selected track before starting recording
+         data. A pop up menu will appear after every reset for those tracks with more than one layout.
+
+        <h3>Database</h3>
+        The database storing the laptimes can be accessed via the <b>Edit Database</b> option in the menu. Individual
+        laptimes can be deleted and the entire database can be backed up as a JSON file with path Downloads/actimeattack/data
+        in your Android device.
+
+        <h3>Important</h3>
+        Please remember to backup your database before removing/reinstalling AC Time Attack. The database with
+        all its data is part of the app. If you want to reinstall the app or move your laptimes to another
+         device use the backup/restore options in the menu.
+
+        <h3>Problems running AC Time Attack?</h3>
+        1. Make sure your WiFi is on and connected to the same
+        network as your game console.<br/><br/>2. If you are using an older or slower Android device and you are
+        having problems try changing the UDP rate in the settings menu. This will introduce a slight delay in the communication
+        but might solve your problem.
+
+        <h3>Reset App button</h3>
+        Assetto Corsa does not inform the app about changes in car/track configuration. The reset app button
+        forces the game to share that information so the app can update itself and record data for the right car/track combo.
+
+        <h3>The on/off button</h3>
+        This is a toggle button with two states. This button pauses the communication between
+        the game and the app. It is useful for instance when watching replays.
+        Press the button before entering replay to avoid recording corrupted data and press again when resuming driving.</p>]]>
+    </string>
 
 </resources>

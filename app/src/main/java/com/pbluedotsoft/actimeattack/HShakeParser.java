@@ -1,6 +1,8 @@
 package com.pbluedotsoft.actimeattack;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.Arrays;
 
 /**
@@ -25,12 +27,20 @@ public class HShakeParser {
             }
             carName = carName.replace("ks_", "");
             carName = carName.substring(0, 1).toUpperCase() + carName.substring(1);
+
             // Driver name
             driverName = new String(Arrays.copyOfRange(packet, 100, 200), "UTF-16LE");
             pos = driverName.indexOf('%');
             if (pos > 0) {
                 driverName = driverName.substring(0, pos);
             }
+
+            // Identifier
+            identifier = ByteBuffer.wrap(packet, 200, 4).order(ByteOrder.LITTLE_ENDIAN).getInt();
+
+            // Version
+            version = ByteBuffer.wrap(packet, 204, 4).order(ByteOrder.LITTLE_ENDIAN).getInt();
+
             // Track name
             trackName = new String(Arrays.copyOfRange(packet, 208, 308), "UTF-16LE");
             pos = trackName.indexOf('%');
@@ -39,6 +49,7 @@ public class HShakeParser {
             }
             trackName = trackName.replace("ks_", "");
             trackName = trackName.substring(0, 1).toUpperCase() + trackName.substring(1);
+
             // Track config
             trackConfig = new String(Arrays.copyOfRange(packet, 308, 408), "UTF-16LE");
             pos = trackConfig.indexOf('%');

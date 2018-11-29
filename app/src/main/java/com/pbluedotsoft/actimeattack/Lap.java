@@ -60,8 +60,15 @@ public class Lap {
         int ms = gap % 1000;
 
         String minStr = (min == 0) ? "" : String.format(Locale.ENGLISH, "%s:", min);
-        String secStr = (sec == 0 && min == 0) ? "0." : String.format(Locale.ENGLISH, "%02d.",
-                sec);
+        String secStr = String.format(Locale.ENGLISH, "%02d.", sec);
+        if (min == 0) {
+            if (sec == 0) {
+                secStr = "0.";
+            } else {
+                secStr = String.format(Locale.ENGLISH, "%d.", sec);
+            }
+        }
+
         String msStr = String.format(Locale.ENGLISH, "%03d", ms);
 
         return String.format(Locale.ENGLISH, "%s%s%s%s", sign, minStr, secStr, msStr);
