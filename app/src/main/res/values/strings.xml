@@ -58,7 +58,7 @@
          in the game. For instance, the API sees both Barcelona GP and Barcelona Moto as just Barcelona. My workaround
          this problem is to display a <b>menu with the different layouts</b> for the selected track before starting recording
          data. A pop up menu will appear after every restart for those tracks with more than one layout.
-         Another limitations is related to <b>invalid laps</b>. The API does not inform about invalid laps. The app will register
+         Another limitation is related to <b>invalid laps</b>. The API does not inform about invalid laps. The app will register
          every lap as a valid lap. Remember that you can always delete laptimes from the database if you want to keep it clean.
 
         <h3>Database</h3>

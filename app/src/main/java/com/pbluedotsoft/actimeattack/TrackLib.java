@@ -28,7 +28,8 @@ public class TrackLib {
         trackMap.put("Imola", new String[]{"Imola"});
         trackMap.put("Laguna_seca", new String[]{"Laguna Seca"});
         trackMap.put("Magione", new String[]{"Magione"});
-        trackMap.put("Monza", new String[]{"Monza", "Monza 1966 - Full", "Monza 1966 - " +
+        trackMap.put("Monza", new String[]{"Monza"});
+        trackMap.put("Monza66", new String[]{"Monza 1966 - Full", "Monza 1966 - " +
                 "Junior", "Monza 1966 - Road"});
         trackMap.put("Mugello", new String[]{"Mugello"});
         trackMap.put("Nordschleife", new String[]{"Nordschleife", "Nordschleife - Endurance",
@@ -38,7 +39,8 @@ public class TrackLib {
         trackMap.put("Red_bull_ring", new String[]{"Red Bull Ring - GP", "Red Bull Ring - " +
                 "National"});
         trackMap.put("Silverstone", new String[]{"Silverstone - International", "Silverstone - " +
-                "National", "Silverstone - 1967", "Silverstone - GP"});
+                "National", "Silverstone - GP"});
+        trackMap.put("Silverstone1967", new String[]{"Silverstone - 1967"});
         trackMap.put("Spa", new String[]{"Spa"});
         trackMap.put("Vallelunga", new String[]{"Vallelunga", "Vallelunga - Classic",
                 "Vallelunga - Club"});

@@ -2,7 +2,6 @@ package com.pbluedotsoft.actimeattack;
 
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
@@ -17,13 +16,10 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -32,8 +28,6 @@ import com.pbluedotsoft.actimeattack.data.LapContract.LapEntry;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.Random;
 
 
 
@@ -248,41 +242,41 @@ public class DBActivity extends AppCompatActivity implements LoaderManager
     /**
      * Insert dummy laptime
      */
-    private void insertDummyLaptime() {
-        String[] tracks = {
-                "Dummy track location"
-        };
-
-        String[] cars = {
-                "Dummy car name"
-        };
-
-        String[] carClasses = {
-                "Dummy class"
-        };
-
-//        // PERFORMANCE TEST: test inserts 10000 laptimes
-//        for (int i = 0; i < 1000; i++) {
-        String track = tracks[new Random().nextInt(tracks.length)];
-        String car = cars[new Random().nextInt(cars.length)];
-        String carClass = carClasses[new Random().nextInt(carClasses.length)];
-        Random random = new Random();
-        int laps = random.nextInt(50000);
-        float s1 = random.nextFloat() * 80 + 10;
-        float s2 = random.nextFloat() * 80 + 10;
-        float s3 = random.nextFloat() * 80 + 10;
-        float time = s1 + s2 + s3;
-
-        ContentValues values = new ContentValues();
-        values.put(LapEntry.COLUMN_LAP_TRACK, track);
-        values.put(LapEntry.COLUMN_LAP_CAR, car);
-        values.put(LapEntry.COLUMN_LAP_NLAPS, laps);
-        values.put(LapEntry.COLUMN_LAP_TIME, time);
-
-        Uri newUri = getContentResolver().insert(LapEntry.CONTENT_URI, values);
-//            Log.d(TAG, "Inserted uri: " + newUri);
-//        }
-    }
+//    private void insertDummyLaptime() {
+//        String[] tracks = {
+//                "Dummy track location"
+//        };
+//
+//        String[] cars = {
+//                "Dummy car name"
+//        };
+//
+//        String[] carClasses = {
+//                "Dummy class"
+//        };
+//
+////        // PERFORMANCE TEST: test inserts 10000 laptimes
+////        for (int i = 0; i < 1000; i++) {
+//        String track = tracks[new Random().nextInt(tracks.length)];
+//        String car = cars[new Random().nextInt(cars.length)];
+//        String carClass = carClasses[new Random().nextInt(carClasses.length)];
+//        Random random = new Random();
+//        int laps = random.nextInt(50000);
+//        float s1 = random.nextFloat() * 80 + 10;
+//        float s2 = random.nextFloat() * 80 + 10;
+//        float s3 = random.nextFloat() * 80 + 10;
+//        float time = s1 + s2 + s3;
+//
+//        ContentValues values = new ContentValues();
+//        values.put(LapEntry.COLUMN_LAP_TRACK, track);
+//        values.put(LapEntry.COLUMN_LAP_CAR, car);
+//        values.put(LapEntry.COLUMN_LAP_NLAPS, laps);
+//        values.put(LapEntry.COLUMN_LAP_TIME, time);
+//
+//        Uri newUri = getContentResolver().insert(LapEntry.CONTENT_URI, values);
+////            Log.d(TAG, "Inserted uri: " + newUri);
+////        }
+//    }
 
     /**
      * LoaderManager.LoaderCallbacks method implementations.

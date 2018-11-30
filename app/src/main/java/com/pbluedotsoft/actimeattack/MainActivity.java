@@ -35,8 +35,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.pbluedotsoft.actimeattack.data.LapContract.LapEntry;
-
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -47,6 +45,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import com.pbluedotsoft.actimeattack.data.LapContract.LapEntry;
+
+
 
 public class MainActivity extends AppCompatActivity implements LoaderManager
         .LoaderCallbacks<Cursor>, TrackConfigDialog.DialogPositiveListener {
@@ -63,11 +65,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
     private AlertDialog mInfoDialog;
 
     private ToggleButton pauseToggleBtn;
-    private boolean mAppOn;         /* Pause flag for PacketHandlerAsyncTask */
-    private boolean mHSKready;      /* Handshake finished, client/server are connected */
-    private PacketParser mParser;   /* Used by PacketHandlerAsyncTask */
-    private Timer mTimer;           /* Timer runs the TimeTask that runs the AsyncTasks */
-    private int mConnectionTries;   /* Handshake tries counter */
+    private boolean mAppOn;             /* Pause flag for PacketHandlerAsyncTask */
+    private boolean mHSKready;          /* Handshake finished, client/server are connected */
+    int mUdpRate;                       /* UDP rate, lower value means better sync */
+    private PacketParser mParser;       /* Used by PacketHandlerAsyncTask */
+    private Timer mPacketHandlerTimer;  /* Timer runs the TimeTask that runs the AsyncTasks */
+    private int mHSCounter;             /* Handshake tries counter */
 
     private ListView mSessionListView, mDatabaseListView;
     private TextView mCarTV, mTrackTV, mTopSpeedTV, mSpeedTV, mLaptimeTV, mLastlapTV,
@@ -85,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
     private boolean mSoundOn;   /* Flag connected to option's menu sound checkbox */
 
 
-//    @SuppressLint("StringFormatInvalid")
+    //    @SuppressLint("StringFormatInvalid")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
         mCurLap = -1;
         mRecord = Integer.MAX_VALUE;
         mHSKready = false;
-        mConnectionTries = 0;
+        mHSCounter = 20;
 
         // Session laptime list
         mSessionLapList = new ArrayList<>();
@@ -150,20 +153,21 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
         pauseToggleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               mAppOn = !mAppOn;
+                mAppOn = !mAppOn;
             }
         });
     }
 
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
+//    @Override
+//    protected void onSaveInstanceState(Bundle outState) {
 //        if (mActualTrack != null) {
 //            outState.putString("actualTrack", mActualTrack);
 //        }
+//        super.onSaveInstanceState(outState);    // calling super after fixes random crash
+//
 //        Log.d(LOG, "Saving state: " + mActualTrack);
-    }
+//    }
 
 
     @Override
@@ -175,9 +179,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         mSoundOn = sharedPref.getBoolean(getResources().getString(R.string.pref_sound_key), true);
         AC_SERVER_IP = sharedPref.getString(getResources().getString(R.string.pref_ip_key), getResources().getString(R.string.pref_ip_default));
-        int udpRate = Integer.parseInt(sharedPref.getString(getResources().getString(R.string
-                        .pref_udp_key), getResources().getString(R.string.pref_udp_default)));
-        udpRate = (udpRate < 10 || udpRate > 50) ? 15 : udpRate;
+        mUdpRate = Integer.parseInt(sharedPref.getString(getResources().getString(R.string
+                .pref_udp_key), getResources().getString(R.string.pref_udp_default)));
+        mUdpRate = (mUdpRate < 10 || mUdpRate > 50) ? 15 : mUdpRate;
 
         //
         // Coming back from edit database activity? -----------------------> SKIP Network Setup
@@ -207,24 +211,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
             return;
         }
 
-        // Connect to AC server
+        //
         new HandshakeAsyncTask().execute();
-
-        // ToggleButton ON
-        pauseToggleBtn.setChecked(true);
-
-        // Start packet receiver on client
-        mParser = new PacketParser();
-        TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                if (mAppOn && mActualTrack != null)
-                    new PacketHandlerAsyncTask().execute();  // AsyncTask class
-            }
-        };
-        mTimer = new Timer();
-        // Lower period better sync with game but too low might crash slow devices (high cpu usage)
-        mTimer.schedule(timerTask, 0, udpRate);
     }
 
     @Override
@@ -239,7 +227,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        Log.d(LOG, "DESTROY");
     }
 
 
@@ -396,9 +383,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
             case R.id.action_about:
                 showInfoDialog(R.string.about);
                 return true;
-            case R.id.exit_app:
-                this.finishAffinity();
-                return true;
+//            case R.id.exit_app:
+//                this.finishAffinity();
+//                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -540,7 +527,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
             // Passing finish line?
             if (mCurLap != mParser.lapCount) {
                 // Sometimes lastLap is a few ms (garbage data) when starting practice
-                if (mCurLap >= 0 && mParser.lastLap > 10000) {
+                if (mCurLap >= 0 && mParser.lapCount > 0 &&
+                        mParser.lastLap > 20000 && mParser.bestLap > 20000) {
                     // Check if same or higher lap number already in list (user restarted session)
                     for (Lap lap : mSessionLapList) {
                         if (lap.getLapNum() >= mParser.lapCount) {
@@ -602,7 +590,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
     }
 
 
-
     /**
      * INNER AsyncTask Classe
      */
@@ -627,7 +614,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
             mLock.acquire();
             try {
                 // Contact AC Server
-//                Log.d(LOG, "HandshakeAsyncTask->doInBackground AC_SERVER_IP: " + AC_SERVER_IP);
                 InetAddress server = InetAddress.getByName(AC_SERVER_IP);
                 DatagramPacket packet = new DatagramPacket(hand, hand.length, server,
                         PORT);
@@ -647,7 +633,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
                 packet = new DatagramPacket(hand, hand.length, server,
                         PORT);
                 mSocket.send(packet);
-                Log.d(LOG, "Client has been added as a listener to AC server.");
                 return true;
 
             } catch (SocketException e) {
@@ -663,24 +648,43 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
 
         @Override
         protected void onPostExecute(Boolean validPacket) {
-            if (!validPacket) {
+            // Packet identifier should be 4242 and version 1
+            if (!validPacket || hsParser.identifier != 4242 || hsParser.version != 1) {
+                if (mHSCounter > 0) {
+                    mHSCounter--;
+//                    Log.d(LOG, "Again mCounter: " + mHSCounter);
+                    new HandshakeAsyncTask().execute();     // Try again
+                    return;
+                }
+
+                showInfoDialog(R.string.error_connecting);
+//                Log.d(LOG, "Dialog mCounter: " + mHSCounter);
                 return;
             }
 
-            // packet identifier should be 4242 and version 1
-            if (hsParser.identifier == 4242 && hsParser.version == 1) {
-//                Log.d(LOG, "Connected");
-                mHSKready = true;
-            } else {
-                if (mConnectionTries > 100) {
-                    showInfoDialog(R.string.error_connecting);
-                } else {
-                    mConnectionTries++;
-//                    Log.d(LOG, "Trying...");
-                    new HandshakeAsyncTask().execute();
-                }
-                return;
+            // Multi async tasks might open simultaneous info and track layout dialogs
+            if (mInfoDialog != null) {
+                mInfoDialog.dismiss();
             }
+
+//            Log.d(LOG, "Connected - mCounter: " + mHSCounter);
+            mHSKready = true;
+
+            // ToggleButton ON
+            pauseToggleBtn.setChecked(true);
+
+            // Start packet receiver on client
+            mParser = new PacketParser();
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    if (mAppOn && mActualTrack != null)
+                        new PacketHandlerAsyncTask().execute();  // AsyncTask inner class
+                }
+            };
+            mPacketHandlerTimer = new Timer();
+            // Lower period better sync with game but too low might crash slow devices (high cpu usage)
+            mPacketHandlerTimer.schedule(timerTask, 0, mUdpRate);
 
             String location = hsParser.trackName;   // One location has track variations
             mActualCar = hsParser.carName;
@@ -722,8 +726,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
 //            mAppOn = false;
 //
 //            // Stop timer running packet reader task
-//            mTimer.cancel();
-//            mTimer.purge();
+//            mPacketHandlerTimer.cancel();
+//            mPacketHandlerTimer.purge();
 //
 //            // Prepare handshake
 //            identifier = intToLittleEndian(1);
