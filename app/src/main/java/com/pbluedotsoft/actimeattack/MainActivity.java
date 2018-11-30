@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
 
     private AlertDialog mInfoDialog;
 
-    private ToggleButton pauseToggleBtn;
+    private ToggleButton mPauseToggleBtn;
     private boolean mAppOn;             /* Pause flag for PacketHandlerAsyncTask */
     private boolean mHSKready;          /* Handshake finished, client/server are connected */
     int mUdpRate;                       /* UDP rate, lower value means better sync */
@@ -149,8 +149,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
         });
 
         // Pause button
-        pauseToggleBtn = findViewById(R.id.pause_toggle_button);
-        pauseToggleBtn.setOnClickListener(new View.OnClickListener() {
+        mPauseToggleBtn = findViewById(R.id.pause_toggle_button);
+        mPauseToggleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mAppOn = !mAppOn;
@@ -187,6 +187,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
         // Coming back from edit database activity? -----------------------> SKIP Network Setup
         //
         if (mSocket != null) {
+            // ToggleButton ON
+            mPauseToggleBtn.setChecked(true);
             mAppOn = true;
             return;
         }
@@ -671,7 +673,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
             mHSKready = true;
 
             // ToggleButton ON
-            pauseToggleBtn.setChecked(true);
+            mPauseToggleBtn.setChecked(true);
 
             // Start packet receiver on client
             mParser = new PacketParser();

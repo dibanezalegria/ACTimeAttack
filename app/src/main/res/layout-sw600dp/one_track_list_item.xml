@@ -14,7 +14,7 @@
         android:layout_weight="3"
         android:maxLines="1"
         android:paddingEnd="0dp"
-        android:paddingStart="8dp"
+        android:paddingStart="16dp"
         android:gravity="start"
         android:textSize="@dimen/medium_text"
         android:textColor="@color/whiteText"/>
