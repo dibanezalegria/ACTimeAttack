@@ -9,6 +9,8 @@
         <p>* Restart Assetto Corsa<p><p>* Restart PS4 and
         Android device</p><p>* Restart router</p><p>Best of luck!</p>]]></string>
 
+    <string name="error_track_layouts">Track layouts missing. Click RESTART button.</string>
+
     <!-- Preferences -->
     <string name="pref_sound_key">pref_sound_key</string>
 
@@ -38,7 +40,7 @@
     <string
         name="about"><![CDATA[<h3>About Assetto Corsa</h3>Assetto Corsa is a sim racing video game developed
         by Kunos Simulazioni. It is designed with an emphasis on a realistic racing experience.<br><br/>
-        <b>AC TimeAttack (v1.3)</b> is a companion app that aims to enhance the single player
+        <b>AC TimeAttack (v1.4)</b> is a companion app that aims to enhance the single player
         experience for console users. It saves your fastest laptimes for each car and track combination.</p>]]>
     </string>
 

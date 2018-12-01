@@ -179,9 +179,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         mSoundOn = sharedPref.getBoolean(getResources().getString(R.string.pref_sound_key), true);
         AC_SERVER_IP = sharedPref.getString(getResources().getString(R.string.pref_ip_key), getResources().getString(R.string.pref_ip_default));
-        mUdpRate = Integer.parseInt(sharedPref.getString(getResources().getString(R.string
-                .pref_udp_key), getResources().getString(R.string.pref_udp_default)));
-        mUdpRate = (mUdpRate < 10 || mUdpRate > 50) ? 15 : mUdpRate;
+        try {
+            mUdpRate = Integer.parseInt(sharedPref.getString(getResources().getString(R.string
+                    .pref_udp_key), getResources().getString(R.string.pref_udp_default)));
+            mUdpRate = (mUdpRate < 10 || mUdpRate > 50) ? 15 : mUdpRate;
+        } catch (NumberFormatException ex) {
+//            Log.d(LOG, "Exception caught: using default udp rate 15.");
+            mUdpRate = 15;
+        }
 
         //
         // Coming back from edit database activity? -----------------------> SKIP Network Setup
@@ -710,7 +715,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
                 bundle.putInt("position", 0);   // Selected item's index
                 bundle.putStringArray("trackConfig", trackConfig);
                 dialog.setArguments(bundle);
-                dialog.show(manager, "track_config_dialog");
+                try {
+                    dialog.show(manager, "track_config_dialog");
+                } catch (IllegalStateException e) {
+                    Toast.makeText(MainActivity.this, R.string.error_track_layouts,
+                            Toast.LENGTH_LONG).show();
+//                    showInfoDialog(R.string.error_track_layouts);
+                }
             }
         }
     }
