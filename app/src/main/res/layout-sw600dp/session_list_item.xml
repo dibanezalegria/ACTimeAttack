@@ -16,6 +16,7 @@
         android:paddingEnd="8dp"
         android:paddingStart="16dp"
         android:text="Lap number"
+        android:maxLines="1"
         android:textColor="@color/whiteText"
         android:textSize="18sp"/>
 
@@ -23,10 +24,11 @@
         android:id="@+id/laptime_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="5"
+        android:layout_weight="4"
         android:paddingEnd="8dp"
         android:paddingStart="8dp"
         android:text="Laptime"
+        android:maxLines="1"
         android:textSize="18sp"
         android:textColor="@color/whiteText"
         android:gravity="center"/>
@@ -39,6 +41,7 @@
         android:paddingEnd="16dp"
         android:paddingStart="8dp"
         android:text="Gap"
+        android:maxLines="1"
         android:textSize="18sp"
         android:textColor="@color/whiteText"
         android:gravity="end"/>

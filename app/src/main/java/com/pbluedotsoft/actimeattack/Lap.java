@@ -1,5 +1,7 @@
 package com.pbluedotsoft.actimeattack;
 
+import android.util.Log;
+
 import java.math.BigDecimal;
 import java.util.Locale;
 
@@ -8,6 +10,8 @@ import java.util.Locale;
  */
 
 public class Lap {
+    private final static String LOG = Lap.class.getSimpleName();
+
     private int mLapNum;
     private int mTime;
 
@@ -54,6 +58,8 @@ public class Lap {
         String sign = "+";
         if (gap < 0)
             sign = "-";
+
+        gap = Math.abs(gap);
 
         int min = gap / 1000 < 60 ? 0 : (gap / 1000) / 60;
         int sec = gap / 1000 < 60 ? (gap / 1000) : (gap / 1000) % 60;

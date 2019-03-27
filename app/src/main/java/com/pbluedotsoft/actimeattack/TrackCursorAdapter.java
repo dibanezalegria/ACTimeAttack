@@ -72,8 +72,9 @@ public class TrackCursorAdapter extends CursorAdapter {
         nlapsTv.setText(String.valueOf(laps));
         speedTv.setText(String.valueOf(speed));
         if (mLapFastestCar > 0) {
-            String gap = (mLapFastestCar == time) ? "-"  : Lap.getGapStr(time, mLapFastestCar);
+            String gap = (mLapFastestCar == time) ? ""  : Lap.getGapStr(time, mLapFastestCar);
             gapTv.setText(gap);
+
         }
 
         // Highlight actual car

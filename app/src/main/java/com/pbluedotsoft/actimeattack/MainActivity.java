@@ -17,6 +17,7 @@ import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -25,6 +26,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -272,6 +274,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
             int nlaps = cursor.getInt(cursor.getColumnIndex(LapEntry.COLUMN_LAP_NLAPS));
             values.put(LapEntry.COLUMN_LAP_NLAPS, nlaps + 1);
             getContentResolver().update(LapEntry.CONTENT_URI, values, selection, selArgs);
+            // show 5s dialog with gap
+            showGapDialog(Lap.getGapStr(laptime, recordDB));
 //            Log.d(LOG, "Database UPDATE");
         } else {
             values.put(LapEntry.COLUMN_LAP_TOP_SPEED, mTopSpeed);
@@ -290,6 +294,31 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
 
         if (cursor != null && !cursor.isClosed())
             cursor.close();
+    }
+
+
+    /**
+     * Show dialog with different laptime/record when crossing finish line.
+     */
+    private void showGapDialog(String diff) {
+        int style = R.style.noRecordDialog;
+        if (diff.substring(0, 1).equals("-")) {
+            style = R.style.recordDialog;
+        }
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this, style);
+        builder.setMessage(diff);
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+        TextView textView = dialog.findViewById(android.R.id.message);
+        if (textView != null) {
+            textView.setTextSize(40);
+            textView.setGravity(Gravity.CENTER_HORIZONTAL);
+        }
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                dialog.dismiss();
+            }
+        }, 5000); // Dismiss in 5 Seconds
     }
 
 
@@ -482,7 +511,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
 
 
     /**
-     * INNER AsyncTask Classe
+     * INNER AsyncTask Class
      */
     public class PacketHandlerAsyncTask extends AsyncTask<Void, Void, Boolean> {
         private DatagramPacket packet;
@@ -598,7 +627,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
 
 
     /**
-     * INNER AsyncTask Classe
+     * INNER AsyncTask Class
      */
     public class HandshakeAsyncTask extends AsyncTask<Void, Void, Boolean> {
         // Type of update required from the server
