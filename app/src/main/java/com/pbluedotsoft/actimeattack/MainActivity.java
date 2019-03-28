@@ -275,7 +275,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
             values.put(LapEntry.COLUMN_LAP_NLAPS, nlaps + 1);
             getContentResolver().update(LapEntry.CONTENT_URI, values, selection, selArgs);
             // show 5s dialog with gap
-            showGapDialog(Lap.getGapStr(laptime, recordDB));
+            showGapDialog(laptime, recordDB);
 //            Log.d(LOG, "Database UPDATE");
         } else {
             values.put(LapEntry.COLUMN_LAP_TOP_SPEED, mTopSpeed);
@@ -300,17 +300,20 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
     /**
      * Show dialog with different laptime/record when crossing finish line.
      */
-    private void showGapDialog(String diff) {
+    private void showGapDialog(int laptime, int recordDB) {
+        String diff = Lap.getGapStr(laptime, recordDB);
         int style = R.style.noRecordDialog;
-        if (diff.substring(0, 1).equals("-")) {
+        String msg = Lap.format(laptime) + "\n(" + diff + ")";
+        if (diff.contains("-")) {
             style = R.style.recordDialog;
         }
         final AlertDialog.Builder builder = new AlertDialog.Builder(this, style);
-        builder.setMessage(diff);
+        builder.setMessage(msg);
         final AlertDialog dialog = builder.create();
         dialog.show();
         TextView textView = dialog.findViewById(android.R.id.message);
         if (textView != null) {
+            textView.setTypeface(null, Typeface.BOLD);
             textView.setTextSize(40);
             textView.setGravity(Gravity.CENTER_HORIZONTAL);
         }
@@ -318,7 +321,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
             public void run() {
                 dialog.dismiss();
             }
-        }, 5000); // Dismiss in 5 Seconds
+        }, 8000); // Dismiss in 5 Seconds
     }
 
 
