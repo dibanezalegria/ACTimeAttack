@@ -16,7 +16,7 @@
         android:paddingEnd="8dp"
         android:paddingStart="16dp"
         android:gravity="start"
-        android:textSize="@dimen/medium_text"
+        android:textSize="@dimen/xlarge_text"
         android:textColor="@color/whiteText"/>
 
      <TextView
@@ -28,7 +28,7 @@
         android:paddingEnd="8dp"
         android:paddingStart="8dp"
         android:gravity="center"
-        android:textSize="@dimen/medium_text"
+        android:textSize="@dimen/xlarge_text"
         android:textColor="@color/whiteText"/>
 
     <TextView
@@ -40,7 +40,7 @@
         android:paddingEnd="32dp"
         android:paddingStart="8dp"
         android:gravity="end"
-        android:textSize="@dimen/medium_text"
+        android:textSize="@dimen/xlarge_text"
         android:textColor="@color/whiteText"/>
 
     <TextView
@@ -52,7 +52,7 @@
         android:paddingEnd="8dp"
         android:paddingStart="8dp"
         android:gravity="center"
-        android:textSize="@dimen/medium_text"
+        android:textSize="@dimen/xlarge_text"
         android:textColor="@color/whiteText"/>
 
     <TextView
@@ -64,7 +64,7 @@
         android:paddingStart="8dp"
         android:gravity="center"
         android:maxLines="1"
-        android:textSize="@dimen/medium_text"
+        android:textSize="@dimen/xlarge_text"
         android:textColor="@color/whiteText"/>
 
 </LinearLayout>
